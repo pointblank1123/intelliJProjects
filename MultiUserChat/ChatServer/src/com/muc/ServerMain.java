@@ -2,7 +2,7 @@ package com.muc;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;;
+import java.net.Socket;
 
 /**
  * Created 04-15-19
