@@ -72,11 +72,13 @@ public class ServerWorker extends Thread {
             String password = tokens[2];
 
             if((login.equals("guest") && password.equals("guest")) || (login.equals("jim") && password.equals("jim"))){
+                // basic login takes first 3 input words and first is command second and third are user and password
                 String msg = "Ok Login\n ";
                 outputStream.write(msg.getBytes());
                 this.login = login;
                 System.out.println("User Logged In Successfully :" + login);
 
+                //gives notification when user logs in
                 String onlineMsg = "Online " + login +"\n";
                 List<ServerWorker> workerList = server.getWorkerList();
                 for(ServerWorker worker: workerList) {
