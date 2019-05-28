@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates and opens server for connection
+ */
+
 public class Server  extends Thread {
     private final int serverPort;
 
@@ -19,6 +23,9 @@ public class Server  extends Thread {
         return workerList;
     }
 
+    /**
+     * Runs join operation for client to join the server
+     */
     @Override
     public void run(){
         try {
@@ -36,6 +43,11 @@ public class Server  extends Thread {
         }
     }
 
+    /**
+     *
+     * @param serverWorker Client-Server Connection
+     * Removes a client from the server
+     */
     public void removeWorker(ServerWorker serverWorker) {
         workerList.remove(serverWorker);
     }

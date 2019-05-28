@@ -7,6 +7,9 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Built operations to be done on the server
+ */
 
 public class ServerWorker extends Thread {
     private final Socket clientSocket;
@@ -30,11 +33,19 @@ public class ServerWorker extends Thread {
         }
     }
 
+    /**
+     *
+     * @param clientSocket Users Server Socket
+     * @throws IOException
+     * @throws InterruptedException
+     *
+     * Joins client onto server with the port
+     */
     private void handleClientSocket(Socket clientSocket) throws IOException, InterruptedException {
         InputStream inputStream = clientSocket.getInputStream();
         this.outputStream = clientSocket.getOutputStream();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream)); // input sticks here
         String line;
         while((line=reader.readLine())!= null){
             String[] tokens = StringUtils.split(line);
@@ -72,6 +83,11 @@ public class ServerWorker extends Thread {
         clientSocket.close();
     }
 
+    /**
+     *
+     * @param tokens Parts of command sent to server
+     * Operation to remove user from a created topic
+     */
     private void handleLeave(String[] tokens) {
         if(tokens.length > 1){
             String topic = tokens[1];
@@ -84,6 +100,11 @@ public class ServerWorker extends Thread {
         return topicSet.contains(topic);
     }
 
+    /**
+     *
+     * @param tokens Parts of command sent to server
+     * Handles Users joining a topic
+     */
     private void handleJoin(String[] tokens) {
         if(tokens.length > 1){
             String topic = tokens[1];
@@ -93,6 +114,13 @@ public class ServerWorker extends Thread {
     }
     // format: "msg" "login" body...
     // format: "msg" "#topic" body...
+
+    /**
+     *
+     * @param tokens Parts of command sent to server
+     * @throws IOException
+     * Handles messages between users and within topics
+     */
     private void handleMessages(String[] tokens) throws IOException {
         String sendTo = tokens[1];
         String body = tokens[2];
@@ -115,6 +143,11 @@ public class ServerWorker extends Thread {
         }
     }
 
+    /**
+     *
+     * @throws IOException
+     * Handles User logoff
+     */
     private void handleLogoff() throws IOException {
         server.removeWorker(this);
         List<ServerWorker> workerList = server.getWorkerList();
@@ -132,6 +165,13 @@ public class ServerWorker extends Thread {
         return login;
     }
 
+    /**
+     *
+     * @param outputStream
+     * @param tokens
+     * @throws IOException
+     * Handles User login
+     */
     private void handleLogin(OutputStream outputStream, String[] tokens) throws IOException {
         if(tokens.length == 3){
             String login =tokens[1];
